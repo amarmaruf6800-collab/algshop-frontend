@@ -8,6 +8,7 @@ import SellerDashboard from './pages/SellerDashboard';
 import ProductDetail from './pages/ProductDetail';
 import MyProducts from './pages/MyProducts';
 import CreateShop from './pages/CreateShop';
+import Register from './pages/Register';
 
 function App() {
   return (
@@ -22,6 +23,7 @@ function App() {
         <Route path="/produk/:id" element={<ProductDetail />} />
         <Route path="/manajemen-produk" element={<MyProducts />} />
         <Route path="/buka-toko" element={<CreateShop />} />
+        <Route path="/register" element={<Register />} />
 
         <Route path="*" element={<Navigate to="/katalog" />} />
       </Routes>

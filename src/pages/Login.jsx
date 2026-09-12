@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import api from '../utils/api';
 
 export default function Login() {
@@ -103,6 +103,16 @@ export default function Login() {
                                 {loading ? 'Memproses...' : 'Masuk Sekarang'}
                             </button>
                         </form>
+
+                        <p className="text-center text-slate-500 mt-7">
+                            Belum punya akun?{' '}
+                            <Link
+                                to="/register"
+                                className="font-bold text-violet-600 hover:text-violet-700"
+                            >
+                                Daftar sekarang
+                            </Link>
+                        </p>
 
                         <button
                             onClick={() => navigate('/katalog')}
