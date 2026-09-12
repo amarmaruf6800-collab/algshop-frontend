@@ -2,6 +2,8 @@ import { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import api from '../utils/api';
 
+const getProductImage = (product) => product?.images?.[0]?.path || product?.image;
+
 export default function ConfirmOrder() {
     const navigate = useNavigate();
 
@@ -613,9 +615,9 @@ export default function ConfirmOrder() {
                                                 }`}
                                         >
                                             <div className="h-20 w-20 shrink-0 overflow-hidden rounded-2xl bg-slate-100 sm:h-24 sm:w-24">
-                                                {item.product.image ? (
+                                                {getProductImage(item.product) ? (
                                                     <img
-                                                        src={`/storage/${item.product.image}`}
+                                                        src={`/storage/${getProductImage(item.product)}`}
                                                         alt={item.product.name}
                                                         className="h-full w-full object-cover"
                                                     />

@@ -1,12 +1,16 @@
 {
-    "rewrites": [
-        {
-            "source": "/api/:path*",
-            "destination": "http://103.58.101.236/api/:path*"
-        },
-        {
-            "source": "/storage/:path*",
-            "destination": "http://103.58.101.236/storage/:path*"
-        }
-    ]
+  "rewrites": [
+    {
+      "source": "/api/:path*",
+      "destination": "http://103.58.101.236/api/:path*"
+    },
+    {
+      "source": "/storage/:path*",
+      "destination": "http://103.58.101.236/storage/:path*"
+    },
+    {
+      "source": "/(.*)",
+      "destination": "/index.html"
+    }
+  ]
 }

@@ -2,12 +2,12 @@ import { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import api from '../utils/api';
 
-const emptyForm = { id: null, name: '', description: '', price: '', stock: '' };
+const emptyForm = { id: null, name: '', description: '', price: '', discount_percent: 0, stock: '' };
 
 export default function MyProducts() {
     const [products, setProducts] = useState([]);
     const [form, setForm] = useState(emptyForm);
-    const [image, setImage] = useState(null);
+    const [images, setImages] = useState([]);
     const [toast, setToast] = useState(null);
     const [loading, setLoading] = useState(false);
 
@@ -44,11 +44,12 @@ export default function MyProducts() {
         formData.append('name', form.name);
         formData.append('description', form.description);
         formData.append('price', form.price);
+        formData.append('discount_percent', form.discount_percent || 0);
         formData.append('stock', form.stock);
 
-        if (image) {
-            formData.append('image', image);
-        }
+        images.forEach((file) => {
+            formData.append('images[]', file);
+        });
 
         try {
             if (form.id) {
@@ -64,7 +65,7 @@ export default function MyProducts() {
             }
 
             setForm(emptyForm);
-            setImage(null);
+            setImages([]);
             const input = document.getElementById('imageInput');
             if (input) input.value = '';
             fetchMyProducts();
@@ -98,10 +99,11 @@ export default function MyProducts() {
             name: produk.name || '',
             description: produk.description || '',
             price: produk.price || '',
+            discount_percent: produk.discount_percent || 0,
             stock: produk.stock || ''
         });
 
-        setImage(null);
+        setImages([]);
         const input = document.getElementById('imageInput');
         if (input) input.value = '';
         window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -109,7 +111,7 @@ export default function MyProducts() {
 
     const cancelEdit = () => {
         setForm(emptyForm);
-        setImage(null);
+        setImages([]);
         const input = document.getElementById('imageInput');
         if (input) input.value = '';
     };
@@ -183,16 +185,19 @@ export default function MyProducts() {
                     </div>
 
                     <form onSubmit={handleSubmit} className="space-y-5 p-6 sm:p-8">
-                        <div className="grid gap-5 md:grid-cols-3">
+                        <div className="grid gap-5 md:grid-cols-4">
                             {[
                                 ['name', 'Nama Produk', 'Nama produk'],
-                                ['price', 'Harga (Rp)', 'Harga jual'],
+                                ['price', 'Harga (Rp)', 'Harga normal'],
+                                ['discount_percent', 'Diskon (%)', '0–100'],
                                 ['stock', 'Stok', 'Jumlah stok'],
                             ].map(([key, label, placeholder]) => (
                                 <div key={key}>
                                     <label className="mb-2 block text-[10px] font-black uppercase tracking-[0.15em] text-slate-500">{label}</label>
                                     <input
                                         type={key === 'name' ? 'text' : 'number'}
+                                        min={key === 'discount_percent' ? 0 : undefined}
+                                        max={key === 'discount_percent' ? 100 : undefined}
                                         placeholder={placeholder}
                                         value={form[key]}
                                         onChange={(e) => setForm({ ...form, [key]: e.target.value })}
@@ -223,9 +228,27 @@ export default function MyProducts() {
                                     <span className="grid h-10 w-10 place-items-center rounded-xl bg-white text-indigo-600 shadow-sm">＋</span>
                                     <span className="mt-3 text-xs font-black text-slate-700">Foto produk</span>
                                     <span className="mt-1 text-xs text-slate-400">
-                                        {image ? image.name : (form.id ? 'Pilih gambar baru (opsional)' : 'Klik untuk memilih gambar')}
+                                        {images.length > 0
+                                            ? `${images.length} gambar dipilih`
+                                            : (form.id ? 'Pilih gambar baru untuk mengganti galeri (opsional)' : 'Pilih 1–10 gambar')}
                                     </span>
-                                    <input type="file" id="imageInput" accept="image/*" onChange={(e) => setImage(e.target.files[0])} className="hidden" />
+                                    <input
+                                        type="file"
+                                        id="imageInput"
+                                        accept="image/*"
+                                        multiple
+                                        onChange={(e) => setImages(Array.from(e.target.files || []).slice(0, 10))}
+                                        className="hidden"
+                                    />
+                                    {images.length > 0 && (
+                                        <div className="mt-3 flex flex-wrap gap-2">
+                                            {images.map((file, index) => (
+                                                <span key={`${file.name}-${index}`} className="rounded-full bg-indigo-50 px-2.5 py-1 text-[10px] font-bold text-indigo-600">
+                                                    {index + 1}. {file.name}
+                                                </span>
+                                            ))}
+                                        </div>
+                                    )}
                                 </label>
                             </div>
                         </div>
@@ -276,8 +299,12 @@ export default function MyProducts() {
                                 {products.map((produk) => (
                                     <tr key={produk.id} className="transition hover:bg-slate-50/70">
                                         <td className="px-6 py-4">
-                                            {produk.image ? (
-                                                <img src={`/storage/${produk.image}`} alt={produk.name} className="h-16 w-16 rounded-2xl object-cover shadow-sm" />
+                                             {(produk.images?.[0]?.path || produk.image) ? (
+                                                <img
+                                                    src={`/storage/${produk.images?.[0]?.path || produk.image}`}
+                                                    alt={produk.name}
+                                                    className="h-16 w-16 rounded-2xl object-cover shadow-sm"
+                                                />
                                             ) : (
                                                 <div className="grid h-16 w-16 place-items-center rounded-2xl bg-slate-100 text-[9px] font-black uppercase text-slate-400">No img</div>
                                             )}
@@ -286,8 +313,14 @@ export default function MyProducts() {
                                             <div className="font-extrabold text-slate-900">{produk.name}</div>
                                             <div className="mt-1 line-clamp-2 text-xs leading-5 text-slate-400">{produk.description || 'Tanpa deskripsi'}</div>
                                         </td>
-                                        <td className="whitespace-nowrap px-6 py-4 font-black text-slate-900">
-                                            Rp{Number(produk.price).toLocaleString('id-ID')}
+                                        <td className="whitespace-nowrap px-6 py-4">
+                                            {Number(produk.discount_percent) > 0 && (
+                                                <div className="text-[10px] font-bold text-slate-400 line-through">Rp{Number(produk.price).toLocaleString('id-ID')}</div>
+                                            )}
+                                            <div className="font-black text-slate-900">Rp{Number(produk.final_price ?? produk.price).toLocaleString('id-ID')}</div>
+                                            {Number(produk.discount_percent) > 0 && (
+                                                <span className="mt-1 inline-block rounded-full bg-red-50 px-2 py-1 text-[9px] font-black text-red-600">-{Number(produk.discount_percent)}%</span>
+                                            )}
                                         </td>
                                         <td className="px-6 py-4">
                                             <span className={`rounded-full px-3 py-1.5 text-xs font-black ${Number(produk.stock) < 10 ? 'bg-red-50 text-red-600' : 'bg-emerald-50 text-emerald-600'}`}>

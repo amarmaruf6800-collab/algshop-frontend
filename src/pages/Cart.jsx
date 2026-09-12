@@ -2,6 +2,8 @@ import { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import api from '../utils/api';
 
+const getProductImage = (product) => product?.images?.[0]?.path || product?.image;
+
 export default function Cart() {
     const [carts, setCarts] = useState([]);
     const [loading, setLoading] = useState(false);
@@ -31,7 +33,7 @@ export default function Cart() {
         navigate('/konfirmasi-pesanan');
     };
 
-    const grandTotal = carts.reduce((total, item) => total + (item.product.price * item.quantity), 0);
+    const grandTotal = carts.reduce((total, item) => total + (Number(item.product.final_price ?? item.product.price) * item.quantity), 0);
     const totalItems = carts.reduce((total, item) => total + Number(item.quantity), 0);
 
     return (
@@ -84,16 +86,16 @@ export default function Cart() {
                                     </button>
 
                                     <div className="h-24 w-24 shrink-0 overflow-hidden rounded-2xl bg-slate-100 sm:h-28 sm:w-28">
-                                        {item.product.image ? <img src={`/storage/${item.product.image}`} alt={item.product.name} className="h-full w-full object-cover transition duration-500 hover:scale-105" /> : <div className="grid h-full place-items-center text-[9px] font-black uppercase text-slate-400">No img</div>}
+                                        {getProductImage(item.product) ? <img src={`/storage/${getProductImage(item.product)}`} alt={item.product.name} className="h-full w-full object-cover transition duration-500 hover:scale-105" /> : <div className="grid h-full place-items-center text-[9px] font-black uppercase text-slate-400">No img</div>}
                                     </div>
 
                                     <div className="min-w-0 flex-1 pr-8">
                                         <p className="text-[9px] font-black uppercase tracking-[0.15em] text-indigo-500">{item.product.shop.name}</p>
                                         <h2 className="mt-1 line-clamp-2 text-base font-black text-slate-900">{item.product.name}</h2>
-                                        <p className="mt-3 text-xs font-semibold text-slate-400">{item.quantity} × Rp{Number(item.product.price).toLocaleString('id-ID')}</p>
-                                        <strong className="mt-2 block text-base font-black text-slate-950 sm:hidden">Rp{(item.product.price * item.quantity).toLocaleString('id-ID')}</strong>
+                                        <p className="mt-3 text-xs font-semibold text-slate-400">{item.quantity} × Rp{Number(item.product.final_price ?? item.product.price).toLocaleString('id-ID')} {Number(item.product.discount_percent) > 0 && <span className="ml-1 font-black text-red-500">-{Number(item.product.discount_percent)}%</span>}</p>
+                                        <strong className="mt-2 block text-base font-black text-slate-950 sm:hidden">Rp{(Number(item.product.final_price ?? item.product.price) * item.quantity).toLocaleString('id-ID')}</strong>
                                     </div>
-                                    <strong className="hidden self-end text-base font-black text-slate-950 sm:block">Rp{(item.product.price * item.quantity).toLocaleString('id-ID')}</strong>
+                                    <strong className="hidden self-end text-base font-black text-slate-950 sm:block">Rp{(Number(item.product.final_price ?? item.product.price) * item.quantity).toLocaleString('id-ID')}</strong>
                                 </div>
                             ))}
                         </section>

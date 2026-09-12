@@ -8,6 +8,7 @@ export default function ProductDetail() {
     const user = JSON.parse(localStorage.getItem('user'));
 
     const [product, setProduct] = useState(null);
+    const [activeImage, setActiveImage] = useState(0);
     const [rating, setRating] = useState(5);
     const [comment, setComment] = useState('');
     const [loadingReview, setLoadingReview] = useState(false);
@@ -27,7 +28,10 @@ export default function ProductDetail() {
         }
     };
 
-    useEffect(() => { fetchDetail(); }, [id]);
+    useEffect(() => {
+        setActiveImage(0);
+        fetchDetail();
+    }, [id]);
 
     const submitReview = async (e) => {
         e.preventDefault();
@@ -113,11 +117,72 @@ export default function ProductDetail() {
                         <div className="absolute left-7 top-7 z-10 rounded-full border border-white/80 bg-white/90 px-3 py-1.5 text-[9px] font-black uppercase tracking-[0.15em] text-slate-500 shadow-sm backdrop-blur">
                             Algshop selection
                         </div>
-                        {product.image ? (
-                            <img src={`/storage/${product.image}`} alt={product.name} className="aspect-square w-full rounded-[27px] object-cover shadow-sm" />
-                        ) : (
-                            <div className="flex aspect-square items-center justify-center rounded-[27px] bg-slate-200 text-sm font-black text-slate-400">Tanpa Gambar</div>
-                        )}
+                        {(() => {
+                            const gallery = product.images?.length
+                                ? product.images
+                                : (product.image ? [{ path: product.image }] : []);
+
+                            const currentImage = gallery[activeImage]?.path;
+
+                            return gallery.length > 0 ? (
+                                <div>
+                                    <div className="relative overflow-hidden rounded-[27px] bg-slate-200">
+                                        <img
+                                            src={`/storage/${currentImage}`}
+                                            alt={`${product.name} - gambar ${activeImage + 1}`}
+                                            className="aspect-square w-full object-cover shadow-sm"
+                                        />
+
+                                        {gallery.length > 1 && (
+                                            <>
+                                                <button
+                                                    type="button"
+                                                    onClick={() => setActiveImage((activeImage - 1 + gallery.length) % gallery.length)}
+                                                    aria-label="Gambar sebelumnya"
+                                                    className="absolute left-4 top-1/2 grid h-11 w-11 -translate-y-1/2 place-items-center rounded-full border border-white/70 bg-white/90 text-lg font-black text-slate-900 shadow-lg backdrop-blur transition hover:scale-105"
+                                                >
+                                                    ‹
+                                                </button>
+                                                <button
+                                                    type="button"
+                                                    onClick={() => setActiveImage((activeImage + 1) % gallery.length)}
+                                                    aria-label="Gambar berikutnya"
+                                                    className="absolute right-4 top-1/2 grid h-11 w-11 -translate-y-1/2 place-items-center rounded-full border border-white/70 bg-white/90 text-lg font-black text-slate-900 shadow-lg backdrop-blur transition hover:scale-105"
+                                                >
+                                                    ›
+                                                </button>
+                                                <div className="absolute bottom-4 left-1/2 -translate-x-1/2 rounded-full bg-slate-950/75 px-3 py-1.5 text-[10px] font-black text-white backdrop-blur">
+                                                    {activeImage + 1} / {gallery.length}
+                                                </div>
+                                            </>
+                                        )}
+                                    </div>
+
+                                    {gallery.length > 1 && (
+                                        <div className="mt-3 flex gap-2 overflow-x-auto pb-1">
+                                            {gallery.map((image, index) => (
+                                                <button
+                                                    type="button"
+                                                    key={image.id || `${image.path}-${index}`}
+                                                    onClick={() => setActiveImage(index)}
+                                                    className={`shrink-0 overflow-hidden rounded-xl border-2 transition ${index === activeImage ? 'border-indigo-500 ring-2 ring-indigo-500/15' : 'border-transparent opacity-70 hover:opacity-100'}`}
+                                                >
+                                                    <img
+                                                        src={`/storage/${image.path}`}
+                                                        alt={`${product.name} thumbnail ${index + 1}`}
+                                                        className="h-16 w-16 object-cover"
+                                                    />
+                                                </button>
+                                            ))}
+                                        </div>
+                                    )}
+                                </div>
+                            ) : (
+                                <div className="flex aspect-square items-center justify-center rounded-[27px] bg-slate-200 text-sm font-black text-slate-400">
+                                    Tanpa Gambar
+                                </div>
+                            );
+                        })()}
                     </div>
 
                     <div className="flex flex-col justify-center p-7 sm:p-10 lg:p-12">
@@ -131,9 +196,17 @@ export default function ProductDetail() {
                             Dijual oleh <strong className="text-slate-800">{product.shop?.name || 'Toko'}</strong>
                         </p>
 
-                        <p className="mt-8 text-3xl font-black tracking-[-0.05em] text-slate-950 sm:text-4xl">
-                            Rp{Number(product.price).toLocaleString('id-ID')}
-                        </p>
+                        <div className="mt-8">
+                            {Number(product.discount_percent) > 0 && (
+                                <div className="mb-1 flex items-center gap-2">
+                                    <span className="text-sm font-bold text-slate-400 line-through">Rp{Number(product.price).toLocaleString('id-ID')}</span>
+                                    <span className="rounded-full bg-red-50 px-2 py-1 text-[10px] font-black text-red-600">-{Number(product.discount_percent)}%</span>
+                                </div>
+                            )}
+                            <p className="text-3xl font-black tracking-[-0.05em] text-slate-950 sm:text-4xl">
+                                Rp{Number(product.final_price ?? product.price).toLocaleString('id-ID')}
+                            </p>
+                        </div>
 
                         <div className={`mt-5 w-fit rounded-full border px-3.5 py-1.5 text-xs font-black ${product.stock < 10 ? 'border-red-100 bg-red-50 text-red-600' : 'border-emerald-100 bg-emerald-50 text-emerald-600'}`}>
                             {product.stock < 10 ? `Sisa stok: ${product.stock}` : `Stok tersedia: ${product.stock}`}

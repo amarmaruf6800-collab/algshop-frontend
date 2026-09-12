@@ -2,6 +2,8 @@ import { useEffect, useMemo, useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import api from '../utils/api';
 
+const getProductImage = (product) => product?.images?.[0]?.path || product?.image;
+
 export default function Catalog() {
     const [products, setProducts] = useState([]);
     const [searchTerm, setSearchTerm] = useState('');
@@ -329,9 +331,9 @@ export default function Catalog() {
                                     to={`/produk/${produk.id}`}
                                     className="relative block aspect-[4/3] overflow-hidden bg-slate-100"
                                 >
-                                    {produk.image ? (
+                                    {getProductImage(produk) ? (
                                         <img
-                                            src={`/storage/${produk.image}`}
+                                            src={`/storage/${getProductImage(produk)}`}
                                             alt={produk.name}
                                             className="h-full w-full object-cover transition duration-700 ease-out group-hover:scale-105"
                                             loading="lazy"
@@ -378,7 +380,7 @@ export default function Catalog() {
                                             Harga terbaik
                                         </p>
                                         <p className="text-2xl font-black tracking-[-0.04em] text-slate-950">
-                                            Rp{Number(produk.price).toLocaleString('id-ID')}
+                                            {Number(produk.discount_percent) > 0 && <div className="text-xs font-bold text-slate-400 line-through">Rp{Number(produk.price).toLocaleString('id-ID')}</div>}<div>Rp{Number(produk.final_price ?? produk.price).toLocaleString('id-ID')}</div>
                                         </p>
                                     </div>
 
