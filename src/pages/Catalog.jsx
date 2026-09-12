@@ -11,6 +11,11 @@ export default function Catalog() {
     const navigate = useNavigate();
     const user = JSON.parse(localStorage.getItem('user'));
 
+    const showToast = (message, type = 'success') => {
+        setToast({ message, type });
+        window.setTimeout(() => setToast(null), 2800);
+    };
+
     useEffect(() => {
         const fetchCatalog = async () => {
             try {
@@ -26,11 +31,6 @@ export default function Catalog() {
 
         fetchCatalog();
     }, []);
-
-    const showToast = (message, type = 'success') => {
-        setToast({ message, type });
-        window.setTimeout(() => setToast(null), 2800);
-    };
 
     const handleLogout = () => {
         localStorage.removeItem('token');
@@ -73,7 +73,7 @@ export default function Catalog() {
     const totalProducts = products.length;
 
     return (
-        <div className="min-h-screen bg-[#f7f8fc] text-slate-900 font-sans selection:bg-slate-900 selection:text-white">
+        <div className="min-h-screen overflow-x-hidden bg-[#f6f7fb] font-sans text-slate-900 selection:bg-indigo-600 selection:text-white">
             {/* Ambient background */}
             <div className="pointer-events-none fixed inset-0 -z-10 overflow-hidden">
                 <div className="absolute -top-40 left-1/2 h-[520px] w-[760px] -translate-x-1/2 rounded-full bg-indigo-100/60 blur-3xl" />
@@ -82,7 +82,7 @@ export default function Catalog() {
             </div>
 
             {/* NAVBAR */}
-            <nav className="sticky top-0 z-50 border-b border-white/70 bg-white/75 backdrop-blur-2xl">
+            <nav className="sticky top-0 z-50 border-b border-white/80 bg-white/80 shadow-[0_8px_30px_rgba(15,23,42,0.04)] backdrop-blur-2xl">
                 <div className="mx-auto flex min-h-[76px] max-w-7xl items-center justify-between gap-4 px-4 sm:px-6 lg:px-8">
                     <Link to="/" className="group flex items-center gap-3">
                         <div className="grid h-10 w-10 place-items-center rounded-2xl bg-slate-950 text-white shadow-lg shadow-slate-900/15 transition-transform duration-300 group-hover:-rotate-3 group-hover:scale-105">
@@ -208,8 +208,8 @@ export default function Catalog() {
             </nav>
 
             {/* HERO */}
-            <header className="relative mx-auto max-w-7xl px-4 pb-12 pt-14 sm:px-6 sm:pb-16 sm:pt-20 lg:px-8">
-                <div className="grid items-end gap-10 lg:grid-cols-[1fr_420px]">
+            <header className="relative mx-auto max-w-7xl px-4 pb-16 pt-12 sm:px-6 sm:pb-20 sm:pt-20 lg:px-8">
+                <div className="grid items-center gap-10 lg:grid-cols-[1.08fr_0.92fr]">
                     <div>
                         <div className="mb-5 inline-flex items-center gap-2 rounded-full border border-slate-200/80 bg-white/70 px-3 py-1.5 text-[10px] font-black uppercase tracking-[0.16em] text-slate-500 shadow-sm backdrop-blur">
                             <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 shadow-[0_0_0_4px_rgba(16,185,129,0.10)]" />
@@ -217,46 +217,49 @@ export default function Catalog() {
                         </div>
 
                         <h1 className="max-w-3xl text-4xl font-black leading-[0.98] tracking-[-0.055em] text-slate-950 sm:text-6xl lg:text-7xl">
-                            Temukan sesuatu
-                            <span className="block bg-gradient-to-r from-indigo-600 via-violet-600 to-slate-950 bg-clip-text text-transparent">
-                                yang luar biasa.
+                            Belanja yang
+                            <span className="block bg-gradient-to-r from-indigo-600 via-violet-600 to-slate-950 bg-clip-text pb-1 text-transparent">
+                                terasa berbeda.
                             </span>
                         </h1>
 
                         <p className="mt-6 max-w-2xl text-sm leading-7 text-slate-500 sm:text-base">
-                            Koleksi pilihan dengan kualitas terbaik, harga transparan,
-                            dan pengalaman belanja yang dibuat sederhana.
+                            Temukan produk pilihan dengan pengalaman belanja yang sederhana, cepat,
+                            dan dirancang dengan perhatian pada setiap detail.
                         </p>
                     </div>
 
                     <div className="relative">
                         <div className="absolute -inset-1 rounded-[26px] bg-gradient-to-r from-indigo-200/50 to-violet-200/50 blur-xl" />
-                        <div className="relative rounded-[26px] border border-white bg-white/85 p-2 shadow-2xl shadow-slate-200/70 backdrop-blur-xl">
-                            <div className="relative flex items-center">
-                                <span className="pointer-events-none absolute left-4 text-slate-400">
-                                    <svg viewBox="0 0 24 24" className="h-5 w-5 fill-none stroke-current stroke-2">
-                                        <circle cx="11" cy="11" r="7" />
-                                        <path d="m20 20-4-4" />
-                                    </svg>
-                                </span>
+                        <div className="relative overflow-hidden rounded-[32px] border border-white/90 bg-slate-950 p-3 shadow-2xl shadow-slate-300/50">
+                            <div className="rounded-[25px] border border-white/10 bg-white/[0.04] p-6 sm:p-7">
+                                <div className="mb-5 flex items-center justify-between"><div><p className="text-[9px] font-black uppercase tracking-[0.2em] text-indigo-300">Discover</p><h2 className="mt-1 text-xl font-black tracking-tight text-white">Cari produk favorit</h2></div><div className="grid h-10 w-10 place-items-center rounded-2xl bg-white/10 text-sm text-indigo-200">✦</div></div>
+                                <div className="relative flex items-center rounded-[22px] bg-white p-2 shadow-2xl">
+                                    <span className="pointer-events-none absolute left-4 text-slate-400">
+                                        <svg viewBox="0 0 24 24" className="h-5 w-5 fill-none stroke-current stroke-2">
+                                            <circle cx="11" cy="11" r="7" />
+                                            <path d="m20 20-4-4" />
+                                        </svg>
+                                    </span>
 
-                                <input
-                                    type="text"
-                                    placeholder="Cari produk favoritmu..."
-                                    value={searchTerm}
-                                    onChange={(e) => setSearchTerm(e.target.value)}
-                                    className="h-12 w-full rounded-[19px] bg-slate-50 pl-12 pr-12 text-sm font-medium text-slate-900 outline-none transition placeholder:text-slate-400 focus:bg-white focus:ring-2 focus:ring-indigo-500/20"
-                                />
+                                    <input
+                                        type="text"
+                                        placeholder="Cari produk favoritmu..."
+                                        value={searchTerm}
+                                        onChange={(e) => setSearchTerm(e.target.value)}
+                                        className="h-12 w-full rounded-[18px] bg-slate-50 pl-12 pr-12 text-sm font-medium text-slate-900 outline-none transition placeholder:text-slate-400 focus:bg-white focus:ring-2 focus:ring-indigo-500/20"
+                                    />
 
-                                {searchTerm && (
-                                    <button
-                                        onClick={() => setSearchTerm('')}
-                                        className="absolute right-3 grid h-8 w-8 place-items-center rounded-xl text-slate-400 transition hover:bg-slate-200 hover:text-slate-700"
-                                        aria-label="Hapus pencarian"
-                                    >
-                                        ×
-                                    </button>
-                                )}
+                                    {searchTerm && (
+                                        <button
+                                            onClick={() => setSearchTerm('')}
+                                            className="absolute right-3 grid h-8 w-8 place-items-center rounded-xl text-slate-400 transition hover:bg-slate-200 hover:text-slate-700"
+                                            aria-label="Hapus pencarian"
+                                        >
+                                            ×
+                                        </button>
+                                    )}
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -264,8 +267,8 @@ export default function Catalog() {
             </header>
 
             {/* PRODUCT CATALOG */}
-            <main className="mx-auto max-w-7xl px-4 pb-24 sm:px-6 lg:px-8">
-                <div className="mb-6 flex items-center justify-between">
+            <main id="produk" className="mx-auto max-w-7xl px-4 pb-24 sm:px-6 lg:px-8">
+                <div className="mb-7 flex flex-col gap-3 border-b border-slate-200/80 pb-5 sm:flex-row sm:items-end sm:justify-between">
                     <div>
                         <p className="text-[10px] font-black uppercase tracking-[0.18em] text-indigo-500">
                             Marketplace
@@ -319,7 +322,7 @@ export default function Catalog() {
                         {filteredProducts.map((produk) => (
                             <article
                                 key={produk.id}
-                                className="group flex min-w-0 flex-col overflow-hidden rounded-[28px] border border-slate-200/70 bg-white shadow-sm shadow-slate-200/50 transition-all duration-500 hover:-translate-y-1.5 hover:border-slate-300 hover:shadow-2xl hover:shadow-slate-300/30"
+                                className="group flex min-w-0 flex-col overflow-hidden rounded-[30px] border border-slate-200/80 bg-white shadow-sm shadow-slate-200/40 transition-all duration-500 hover:-translate-y-1.5 hover:border-slate-300 hover:shadow-2xl hover:shadow-slate-300/30"
                             >
                                 {/* Image */}
                                 <Link
@@ -355,7 +358,7 @@ export default function Catalog() {
                                 {/* Details */}
                                 <div className="flex flex-1 flex-col p-5">
                                     <div className="mb-3 flex items-center gap-2">
-                                        <span className="grid h-6 w-6 shrink-0 place-items-center rounded-lg bg-slate-100 text-[10px]">
+                                        <span className="grid h-7 w-7 shrink-0 place-items-center rounded-xl bg-slate-950 text-[10px] font-black text-white">
                                             S
                                         </span>
                                         <p className="truncate text-[10px] font-black uppercase tracking-[0.12em] text-slate-400">
@@ -372,7 +375,7 @@ export default function Catalog() {
 
                                     <div className="mt-5">
                                         <p className="mb-1 text-[10px] font-bold uppercase tracking-[0.15em] text-slate-400">
-                                            Harga
+                                            Harga terbaik
                                         </p>
                                         <p className="text-2xl font-black tracking-[-0.04em] text-slate-950">
                                             Rp{Number(produk.price).toLocaleString('id-ID')}
@@ -408,7 +411,7 @@ export default function Catalog() {
             </main>
 
             {/* FOOTER */}
-            <footer className="border-t border-slate-200/70 bg-white/60">
+            <footer className="border-t border-slate-200/70 bg-white/70">
                 <div className="mx-auto flex max-w-7xl flex-col gap-2 px-4 py-8 text-center sm:flex-row sm:items-center sm:justify-between sm:px-6 sm:text-left lg:px-8">
                     <p className="text-xs font-bold text-slate-400">
                         © {new Date().getFullYear()} Algshop. All rights reserved.

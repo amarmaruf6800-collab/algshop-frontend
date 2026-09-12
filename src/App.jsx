@@ -2,6 +2,7 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import Login from './pages/Login';
 import Catalog from './pages/Catalog';
 import Cart from './pages/Cart';
+import ConfirmOrder from './pages/ConfirmOrder';
 import Payment from './pages/Payment';
 import OrderHistory from './pages/OrderHistory';
 import SellerDashboard from './pages/SellerDashboard';
@@ -17,6 +18,7 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/katalog" element={<Catalog />} />
         <Route path="/keranjang" element={<Cart />} />
+        <Route path="/konfirmasi-pesanan" element={<ConfirmOrder />} />
         <Route path="/pembayaran" element={<Payment />} />
         <Route path="/riwayat-belanja" element={<OrderHistory />} />
         <Route path="/pesanan-masuk" element={<SellerDashboard />} />
