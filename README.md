@@ -11,7 +11,7 @@ The application is built with **React + Vite** on the frontend and **Laravel 12*
 ## 🌐 Live Demo
 
 **Frontend:**  
-https://algshop-frontend.vercel.app
+https://algshop.vercel.app
 
 > The current demo uses simulated payment processing for development and demonstration purposes.
 
