@@ -1,1 +1,17 @@
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400;1,9..144,500&family=Instrument+Sans:wght@400;500;600;700&display=swap');
 @import "tailwindcss";
+
+@theme {
+  /* Palet premium untuk halaman Katalog (Algshop) */
+  --color-paper: #faf9f6;
+  --color-surface: #ffffff;
+  --color-ink: #1e1c17;
+  --color-taupe: #6b675c;
+  --color-hairline: #e7e3d9;
+  --color-forest: #1f3d2e;
+  --color-brass: #a9793b;
+
+  /* Tipografi: Fraunces (display/serif) + Instrument Sans (UI) */
+  --font-display: "Fraunces", ui-serif, Georgia, serif;
+  --font-body: "Instrument Sans", ui-sans-serif, system-ui, sans-serif;
+}
