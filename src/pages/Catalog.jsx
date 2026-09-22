@@ -75,97 +75,82 @@ export default function Catalog() {
     const totalProducts = products.length;
 
     return (
-        <div className="min-h-screen overflow-x-hidden bg-[#F5F2EA] font-body text-[#16191C] selection:bg-[#1E4034] selection:text-white">
-            <style>{`
-                @import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Inter:wght@400;500;600;700&display=swap');
-
-                .font-display { font-family: 'Fraunces', Georgia, 'Times New Roman', serif; }
-                .font-body { font-family: 'Inter', ui-sans-serif, system-ui, -apple-system, sans-serif; }
-
-                @keyframes algshopReveal {
-                    from { opacity: 0; transform: translateY(16px); }
-                    to { opacity: 1; transform: translateY(0); }
-                }
-                .algshop-reveal { animation: algshopReveal 0.9s cubic-bezier(0.16, 1, 0.3, 1) both; }
-
-                @keyframes algshopShimmer {
-                    0% { background-position: -500px 0; }
-                    100% { background-position: 500px 0; }
-                }
-                .algshop-skeleton {
-                    background-color: #ECE7DA;
-                    background-image: linear-gradient(90deg, rgba(236,231,218,0) 0%, rgba(255,255,255,0.85) 50%, rgba(236,231,218,0) 100%);
-                    background-size: 500px 100%;
-                    background-repeat: no-repeat;
-                    animation: algshopShimmer 1.5s ease-in-out infinite;
-                }
-
-                @keyframes algshopToast {
-                    from { opacity: 0; transform: translateY(10px) scale(0.98); }
-                    to { opacity: 1; transform: translateY(0) scale(1); }
-                }
-                .algshop-toast { animation: algshopToast 0.35s cubic-bezier(0.16, 1, 0.3, 1) both; }
-
-                @media (prefers-reduced-motion: reduce) {
-                    .algshop-reveal, .algshop-skeleton, .algshop-toast {
-                        animation: none !important;
-                    }
-                }
-            `}</style>
+        <div className="min-h-screen overflow-x-hidden bg-[#f6f7fb] font-sans text-slate-900 selection:bg-indigo-600 selection:text-white">
+            {/* Ambient background */}
+            <div className="pointer-events-none fixed inset-0 -z-10 overflow-hidden">
+                <div className="absolute -top-40 left-1/2 h-[520px] w-[760px] -translate-x-1/2 rounded-full bg-indigo-100/60 blur-3xl" />
+                <div className="absolute right-[-180px] top-[38%] h-[420px] w-[420px] rounded-full bg-violet-100/40 blur-3xl" />
+                <div className="absolute left-[-180px] bottom-[-100px] h-[420px] w-[420px] rounded-full bg-sky-100/40 blur-3xl" />
+            </div>
 
             {/* NAVBAR */}
-            <nav className="sticky top-0 z-50 border-b border-[#E3DFD3] bg-[#F5F2EA]/95 backdrop-blur-sm">
-                <div className="mx-auto flex h-20 max-w-7xl items-center justify-between gap-4 px-4 sm:px-6 lg:px-8">
-                    <Link to="/" className="font-display text-2xl text-[#16191C] transition-opacity hover:opacity-70">
-                        Algshop<span className="text-[#1E4034]">.</span>
+            <nav className="sticky top-0 z-50 border-b border-white/80 bg-white/80 shadow-[0_8px_30px_rgba(15,23,42,0.04)] backdrop-blur-2xl">
+                <div className="mx-auto flex min-h-[76px] max-w-7xl items-center justify-between gap-4 px-4 sm:px-6 lg:px-8">
+                    <Link to="/" className="group flex items-center gap-3">
+                        <div className="grid h-10 w-10 place-items-center rounded-2xl bg-slate-950 text-white shadow-lg shadow-slate-900/15 transition-transform duration-300 group-hover:-rotate-3 group-hover:scale-105">
+                            <span className="text-sm font-black tracking-tight">A</span>
+                        </div>
+                        <div>
+                            <div className="text-xl font-black tracking-[-0.04em] text-slate-950">
+                                Algshop<span className="text-indigo-500">.</span>
+                            </div>
+                            <div className="hidden text-[9px] font-bold uppercase tracking-[0.22em] text-slate-400 sm:block">
+                                Curated marketplace
+                            </div>
+                        </div>
                     </Link>
 
-                    <div className="flex items-center gap-1 sm:gap-2">
+                    <div className="flex items-center gap-2 sm:gap-3">
                         {user ? (
                             <>
-                                <div className="mr-1 hidden items-center gap-1 border-r border-[#E3DFD3] pr-3 lg:flex">
-                                    <Link to="/manajemen-produk" className="rounded-full px-3 py-2 text-sm font-medium text-[#16191C]/65 transition hover:text-[#16191C]">
+                                <div className="mr-1 hidden items-center gap-3 rounded-full border border-slate-200/80 bg-white/70 py-1.5 pl-1.5 pr-4 shadow-sm md:flex">
+                                    <div className="grid h-8 w-8 place-items-center rounded-full bg-slate-950 text-xs font-bold text-white">
+                                        {user.name?.charAt(0)?.toUpperCase() || 'U'}
+                                    </div>
+                                    <div className="leading-tight">
+                                        <div className="text-[10px] font-semibold uppercase tracking-wider text-slate-400">
+                                            Welcome back
+                                        </div>
+                                        <div className="max-w-28 truncate text-sm font-bold text-slate-800">
+                                            {user.name}
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div className="hidden items-center gap-1 lg:flex">
+                                    <Link to="/manajemen-produk" className="rounded-xl px-3 py-2 text-xs font-bold text-slate-500 transition hover:bg-slate-100 hover:text-slate-950">
                                         Dashboard
                                     </Link>
-                                    <Link to="/pesanan-masuk" className="rounded-full px-3 py-2 text-sm font-medium text-[#16191C]/65 transition hover:text-[#16191C]">
+                                    <Link to="/pesanan-masuk" className="rounded-xl px-3 py-2 text-xs font-bold text-slate-500 transition hover:bg-slate-100 hover:text-slate-950">
                                         Pesanan
                                     </Link>
-                                    <Link to="/riwayat-belanja" className="rounded-full px-3 py-2 text-sm font-medium text-[#16191C]/65 transition hover:text-[#16191C]">
+                                    <Link to="/riwayat-belanja" className="rounded-xl px-3 py-2 text-xs font-bold text-slate-500 transition hover:bg-slate-100 hover:text-slate-950">
                                         Riwayat
                                     </Link>
                                 </div>
 
-                                <div className="hidden items-center gap-2.5 pr-1 md:flex">
-                                    <div className="grid h-8 w-8 shrink-0 place-items-center rounded-full border border-[#E3DFD3] bg-white font-display text-sm text-[#16191C]">
-                                        {user.name?.charAt(0)?.toUpperCase() || 'U'}
-                                    </div>
-                                    <span className="max-w-24 truncate text-sm font-medium text-[#16191C]">
-                                        {user.name}
-                                    </span>
-                                </div>
-
                                 <Link
                                     to="/keranjang"
-                                    className="flex h-10 items-center gap-2 rounded-full bg-[#16191C] px-4 text-sm font-medium text-[#F5F2EA] transition-colors hover:bg-[#1E4034] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1E4034] focus-visible:ring-offset-2"
+                                    className="group flex h-11 items-center gap-2 rounded-2xl bg-slate-950 px-4 text-xs font-extrabold text-white shadow-lg shadow-slate-900/15 transition-all hover:-translate-y-0.5 hover:bg-slate-800"
                                 >
                                     <svg viewBox="0 0 24 24" className="h-[17px] w-[17px] fill-none stroke-current stroke-2">
                                         <path d="M3 4h2l2.2 10.2a2 2 0 0 0 2 1.6h7.9a2 2 0 0 0 1.9-1.4L21 7H6" />
                                         <circle cx="10" cy="20" r="1" />
                                         <circle cx="18" cy="20" r="1" />
                                     </svg>
-                                    <span className="hidden sm:inline">Keranjang</span>
+                                    <span>Keranjang</span>
                                 </Link>
 
                                 <button
                                     onClick={handleLogout}
-                                    className="hidden h-10 rounded-full px-4 text-sm font-medium text-[#16191C]/55 transition hover:text-[#16191C] sm:block"
+                                    className="hidden h-11 rounded-2xl border border-slate-200 bg-white px-4 text-xs font-extrabold text-slate-600 transition hover:border-slate-300 hover:bg-slate-50 sm:block"
                                 >
                                     Keluar
                                 </button>
 
                                 <button
                                     onClick={() => setMobileMenuOpen((open) => !open)}
-                                    className="grid h-10 w-10 place-items-center rounded-full text-[#16191C] transition hover:bg-[#EDE9DF] lg:hidden"
+                                    className="grid h-11 w-11 place-items-center rounded-2xl border border-slate-200 bg-white text-slate-700 transition hover:bg-slate-50 lg:hidden"
                                     aria-label="Buka menu"
                                     aria-expanded={mobileMenuOpen}
                                 >
@@ -181,7 +166,7 @@ export default function Catalog() {
                         ) : (
                             <button
                                 onClick={() => navigate('/login')}
-                                className="rounded-full bg-[#16191C] px-5 py-2.5 text-sm font-medium text-[#F5F2EA] transition-colors hover:bg-[#1E4034] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1E4034] focus-visible:ring-offset-2"
+                                className="rounded-2xl bg-slate-950 px-5 py-3 text-xs font-extrabold text-white shadow-lg shadow-slate-900/20 transition-all hover:-translate-y-0.5 hover:bg-slate-800"
                             >
                                 Masuk / Daftar
                             </button>
@@ -190,32 +175,32 @@ export default function Catalog() {
                 </div>
 
                 {user && mobileMenuOpen && (
-                    <div className="border-t border-[#E3DFD3] bg-[#F5F2EA] px-4 py-3 lg:hidden">
+                    <div className="border-t border-slate-100 bg-white/95 px-4 py-3 shadow-xl backdrop-blur-xl lg:hidden">
                         <div className="mx-auto grid max-w-7xl gap-1">
                             <Link
                                 to="/manajemen-produk"
                                 onClick={() => setMobileMenuOpen(false)}
-                                className="rounded-xl px-4 py-3 text-sm font-medium text-[#16191C]/80 transition hover:bg-white"
+                                className="rounded-xl px-4 py-3 text-sm font-bold text-slate-600 transition hover:bg-slate-50 hover:text-slate-950"
                             >
                                 Dashboard
                             </Link>
                             <Link
                                 to="/pesanan-masuk"
                                 onClick={() => setMobileMenuOpen(false)}
-                                className="rounded-xl px-4 py-3 text-sm font-medium text-[#16191C]/80 transition hover:bg-white"
+                                className="rounded-xl px-4 py-3 text-sm font-bold text-slate-600 transition hover:bg-slate-50 hover:text-slate-950"
                             >
                                 Pesanan masuk
                             </Link>
                             <Link
                                 to="/riwayat-belanja"
                                 onClick={() => setMobileMenuOpen(false)}
-                                className="rounded-xl px-4 py-3 text-sm font-medium text-[#16191C]/80 transition hover:bg-white"
+                                className="rounded-xl px-4 py-3 text-sm font-bold text-slate-600 transition hover:bg-slate-50 hover:text-slate-950"
                             >
                                 Riwayat belanja
                             </Link>
                             <button
                                 onClick={handleLogout}
-                                className="rounded-xl px-4 py-3 text-left text-sm font-medium text-[#A23E2E] transition hover:bg-white"
+                                className="rounded-xl px-4 py-3 text-left text-sm font-bold text-red-500 transition hover:bg-red-50"
                             >
                                 Keluar
                             </button>
@@ -225,156 +210,184 @@ export default function Catalog() {
             </nav>
 
             {/* HERO */}
-            <header className="mx-auto max-w-7xl px-4 pb-14 pt-16 sm:px-6 sm:pb-20 sm:pt-24 lg:px-8">
-                <div className="grid gap-8 lg:grid-cols-[1.15fr_0.85fr] lg:gap-16">
-                    <h1
-                        className="algshop-reveal font-display max-w-xl text-[2.5rem] leading-[1.08] tracking-[-0.01em] text-[#16191C] sm:text-6xl lg:text-[4.25rem]"
-                        style={{ animationDelay: '0ms' }}
-                    >
-                        Belanja yang terasa berbeda, dari toko-toko pilihan.
-                    </h1>
+            <header className="relative mx-auto max-w-7xl px-4 pb-16 pt-12 sm:px-6 sm:pb-20 sm:pt-20 lg:px-8">
+                <div className="grid items-center gap-10 lg:grid-cols-[1.08fr_0.92fr]">
+                    <div>
+                        <div className="mb-5 inline-flex items-center gap-2 rounded-full border border-slate-200/80 bg-white/70 px-3 py-1.5 text-[10px] font-black uppercase tracking-[0.16em] text-slate-500 shadow-sm backdrop-blur">
+                            <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 shadow-[0_0_0_4px_rgba(16,185,129,0.10)]" />
+                            {totalProducts} produk tersedia
+                        </div>
 
-                    <p
-                        className="algshop-reveal max-w-md text-[15px] leading-7 text-[#16191C]/60 sm:text-base lg:self-end lg:pb-2"
-                        style={{ animationDelay: '120ms' }}
-                    >
-                        {isLoading
-                            ? 'Sedang menyiapkan katalog produk pilihan untukmu.'
-                            : totalProducts > 0
-                                ? `Saat ini ada ${totalProducts} produk siap dikirim dari penjual-penjual tepercaya di seluruh platform.`
-                                : 'Katalog akan segera terisi dengan produk-produk pilihan.'}
-                    </p>
-                </div>
+                        <h1 className="max-w-3xl text-4xl font-black leading-[0.98] tracking-[-0.055em] text-slate-950 sm:text-6xl lg:text-7xl">
+                            Belanja yang
+                            <span className="block bg-gradient-to-r from-indigo-600 via-violet-600 to-slate-950 bg-clip-text pb-1 text-transparent">
+                                terasa berbeda.
+                            </span>
+                        </h1>
 
-                <div
-                    className="algshop-reveal mt-10 border-y border-[#16191C]/15 sm:mt-14"
-                    style={{ animationDelay: '220ms' }}
-                >
-                    <div className="flex items-center gap-3 py-5 sm:gap-4 sm:py-7">
-                        <svg viewBox="0 0 24 24" className="h-5 w-5 shrink-0 fill-none stroke-current stroke-2 text-[#16191C]/35 sm:h-6 sm:w-6">
-                            <circle cx="11" cy="11" r="7" />
-                            <path d="m20 20-4-4" />
-                        </svg>
+                        <p className="mt-6 max-w-2xl text-sm leading-7 text-slate-500 sm:text-base">
+                            Temukan produk pilihan dengan pengalaman belanja yang sederhana, cepat,
+                            dan dirancang dengan perhatian pada setiap detail.
+                        </p>
+                    </div>
 
-                        <input
-                            type="text"
-                            placeholder="Cari produk favoritmu…"
-                            value={searchTerm}
-                            onChange={(e) => setSearchTerm(e.target.value)}
-                            className="font-display w-full min-w-0 bg-transparent text-xl text-[#16191C] outline-none placeholder:italic placeholder:text-[#16191C]/35 sm:text-3xl"
-                        />
+                    <div className="relative">
+                        <div className="absolute -inset-1 rounded-[26px] bg-gradient-to-r from-indigo-200/50 to-violet-200/50 blur-xl" />
+                        <div className="relative overflow-hidden rounded-[32px] border border-white/90 bg-slate-950 p-3 shadow-2xl shadow-slate-300/50">
+                            <div className="rounded-[25px] border border-white/10 bg-white/[0.04] p-6 sm:p-7">
+                                <div className="mb-5 flex items-center justify-between"><div><p className="text-[9px] font-black uppercase tracking-[0.2em] text-indigo-300">Discover</p><h2 className="mt-1 text-xl font-black tracking-tight text-white">Cari produk favorit</h2></div><div className="grid h-10 w-10 place-items-center rounded-2xl bg-white/10 text-sm text-indigo-200">✦</div></div>
+                                <div className="relative flex items-center rounded-[22px] bg-white p-2 shadow-2xl">
+                                    <span className="pointer-events-none absolute left-4 text-slate-400">
+                                        <svg viewBox="0 0 24 24" className="h-5 w-5 fill-none stroke-current stroke-2">
+                                            <circle cx="11" cy="11" r="7" />
+                                            <path d="m20 20-4-4" />
+                                        </svg>
+                                    </span>
 
-                        {searchTerm && (
-                            <button
-                                onClick={() => setSearchTerm('')}
-                                aria-label="Hapus pencarian"
-                                className="shrink-0 rounded-full border border-[#16191C]/20 px-3 py-1.5 text-xs font-medium text-[#16191C]/60 transition hover:border-[#16191C]/50 hover:text-[#16191C] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1E4034]"
-                            >
-                                Hapus
-                            </button>
-                        )}
+                                    <input
+                                        type="text"
+                                        placeholder="Cari produk favoritmu..."
+                                        value={searchTerm}
+                                        onChange={(e) => setSearchTerm(e.target.value)}
+                                        className="h-12 w-full rounded-[18px] bg-slate-50 pl-12 pr-12 text-sm font-medium text-slate-900 outline-none transition placeholder:text-slate-400 focus:bg-white focus:ring-2 focus:ring-indigo-500/20"
+                                    />
+
+                                    {searchTerm && (
+                                        <button
+                                            onClick={() => setSearchTerm('')}
+                                            className="absolute right-3 grid h-8 w-8 place-items-center rounded-xl text-slate-400 transition hover:bg-slate-200 hover:text-slate-700"
+                                            aria-label="Hapus pencarian"
+                                        >
+                                            ×
+                                        </button>
+                                    )}
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </header>
 
             {/* PRODUCT CATALOG */}
             <main id="produk" className="mx-auto max-w-7xl px-4 pb-24 sm:px-6 lg:px-8">
-                <div className="mb-8 flex items-baseline justify-between gap-4 border-b border-[#E3DFD3] pb-4 sm:mb-10">
-                    <h2 className="font-display text-2xl text-[#16191C] sm:text-3xl">
-                        {searchTerm ? `Hasil untuk “${searchTerm}”` : 'Semua produk'}
-                    </h2>
-                    <span className="shrink-0 text-sm font-medium text-[#16191C]/45">
-                        {filteredProducts.length} produk
-                    </span>
+                <div className="mb-7 flex flex-col gap-3 border-b border-slate-200/80 pb-5 sm:flex-row sm:items-end sm:justify-between">
+                    <div>
+                        <p className="text-[10px] font-black uppercase tracking-[0.18em] text-indigo-500">
+                            Marketplace
+                        </p>
+                        <h2 className="mt-1 text-xl font-black tracking-tight text-slate-950 sm:text-2xl">
+                            Pilihan untukmu
+                        </h2>
+                    </div>
+
+                    {searchTerm && (
+                        <p className="rounded-full border border-slate-200 bg-white px-3 py-1.5 text-xs font-bold text-slate-500 shadow-sm">
+                            {filteredProducts.length} hasil
+                        </p>
+                    )}
                 </div>
 
                 {isLoading ? (
-                    <div className="grid grid-cols-2 gap-x-5 gap-y-12 sm:gap-x-6 md:grid-cols-3 md:gap-x-8 xl:grid-cols-4">
-                        {[1, 2, 3, 4, 5, 6, 7, 8].map((item) => (
-                            <div key={item}>
-                                <div className="algshop-skeleton aspect-[4/5]" />
-                                <div className="algshop-skeleton mt-4 h-3 w-2/5 rounded-full" />
-                                <div className="algshop-skeleton mt-3 h-4 w-4/5 rounded-full" />
-                                <div className="algshop-skeleton mt-4 h-6 w-1/3 rounded-full" />
+                    <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+                        {[1, 2, 3, 4].map((item) => (
+                            <div key={item} className="overflow-hidden rounded-[28px] border border-slate-200/70 bg-white">
+                                <div className="aspect-[4/3] animate-pulse bg-slate-100" />
+                                <div className="space-y-4 p-5">
+                                    <div className="h-3 w-24 animate-pulse rounded-full bg-slate-100" />
+                                    <div className="h-5 w-4/5 animate-pulse rounded-full bg-slate-100" />
+                                    <div className="h-8 w-2/5 animate-pulse rounded-full bg-slate-100" />
+                                    <div className="h-11 w-full animate-pulse rounded-2xl bg-slate-100" />
+                                </div>
                             </div>
                         ))}
                     </div>
                 ) : filteredProducts.length === 0 ? (
-                    <div className="border border-[#E3DFD3] bg-white px-6 py-24 text-center">
-                        <p className="font-display text-2xl text-[#16191C]">
-                            Tidak ada produk yang cocok
-                        </p>
-                        <p className="mx-auto mt-3 max-w-sm text-sm leading-6 text-[#16191C]/55">
-                            {`Belum ada produk yang cocok dengan pencarian “${searchTerm}”. Coba kata kunci lain.`}
+                    <div className="rounded-[32px] border border-slate-200/80 bg-white/80 px-6 py-20 text-center shadow-sm backdrop-blur">
+                        <div className="mx-auto mb-5 grid h-16 w-16 place-items-center rounded-3xl bg-slate-100 text-2xl">
+                            ✦
+                        </div>
+                        <h2 className="text-2xl font-black tracking-tight text-slate-950">
+                            Produk tidak ditemukan
+                        </h2>
+                        <p className="mx-auto mt-2 max-w-md text-sm leading-6 text-slate-500">
+                            {`Belum ada produk yang cocok dengan pencarian “${searchTerm}”. Coba gunakan kata kunci lain.`}
                         </p>
                         <button
                             onClick={() => setSearchTerm('')}
-                            className="mt-8 rounded-full bg-[#16191C] px-6 py-3 text-sm font-medium text-[#F5F2EA] transition-colors hover:bg-[#1E4034] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1E4034] focus-visible:ring-offset-2"
+                            className="mt-6 rounded-2xl bg-slate-950 px-5 py-3 text-xs font-extrabold text-white transition hover:bg-slate-800"
                         >
                             Lihat semua produk
                         </button>
                     </div>
                 ) : (
-                    <div className="grid grid-cols-2 gap-x-5 gap-y-12 sm:gap-x-6 md:grid-cols-3 md:gap-x-8 xl:grid-cols-4">
+                    <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
                         {filteredProducts.map((produk) => (
-                            <article key={produk.id} className="group flex flex-col">
+                            <article
+                                key={produk.id}
+                                className="group flex min-w-0 flex-col overflow-hidden rounded-[30px] border border-slate-200/80 bg-white shadow-sm shadow-slate-200/40 transition-all duration-500 hover:-translate-y-1.5 hover:border-slate-300 hover:shadow-2xl hover:shadow-slate-300/30"
+                            >
+                                {/* Image */}
                                 <Link
                                     to={`/produk/${produk.id}`}
-                                    className="relative block aspect-[4/5] overflow-hidden bg-[#EDE9DF]"
+                                    className="relative block aspect-[4/3] overflow-hidden bg-slate-100"
                                 >
                                     {getProductImage(produk) ? (
                                         <img
                                             src={`/storage/${getProductImage(produk)}`}
                                             alt={produk.name}
+                                            className="h-full w-full object-cover transition duration-700 ease-out group-hover:scale-105"
                                             loading="lazy"
-                                            className="h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-[1.04]"
                                         />
                                     ) : (
-                                        <div className="font-display flex h-full items-center justify-center text-sm italic text-[#16191C]/30">
+                                        <div className="flex h-full items-center justify-center bg-gradient-to-br from-slate-100 to-slate-200 text-xs font-bold uppercase tracking-widest text-slate-400">
                                             Tanpa gambar
                                         </div>
                                     )}
 
-                                    {Number(produk.discount_percent) > 0 && (
-                                        <span className="absolute left-3 top-3 bg-[#A23E2E] px-2.5 py-1 text-[11px] font-semibold text-white">
-                                            -{Math.round(Number(produk.discount_percent))}%
-                                        </span>
-                                    )}
+                                    <div className="absolute inset-0 bg-gradient-to-t from-slate-950/20 via-transparent to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
 
                                     {produk.stock < 10 && (
-                                        <span className="absolute right-3 top-3 border border-[#16191C]/10 bg-white/95 px-2.5 py-1 text-[11px] font-medium text-[#A23E2E]">
+                                        <span className="absolute left-4 top-4 rounded-full border border-white/70 bg-white/90 px-3 py-1.5 text-[10px] font-black uppercase tracking-wider text-red-600 shadow-lg shadow-slate-900/10 backdrop-blur">
                                             Sisa {produk.stock}
                                         </span>
                                     )}
+
+                                    <span className="absolute right-4 top-4 grid h-9 w-9 place-items-center rounded-full border border-white/70 bg-white/85 text-slate-600 opacity-0 shadow-lg backdrop-blur transition-all duration-300 group-hover:opacity-100">
+                                        ↗
+                                    </span>
                                 </Link>
 
-                                <div className="mt-4 flex flex-1 flex-col">
-                                    <p className="truncate text-xs font-medium text-[#16191C]/45">
-                                        {produk.shop?.name || 'Official Store'}
-                                    </p>
+                                {/* Details */}
+                                <div className="flex flex-1 flex-col p-5">
+                                    <div className="mb-3 flex items-center gap-2">
+                                        <span className="grid h-7 w-7 shrink-0 place-items-center rounded-xl bg-slate-950 text-[10px] font-black text-white">
+                                            S
+                                        </span>
+                                        <p className="truncate text-[10px] font-black uppercase tracking-[0.12em] text-slate-400">
+                                            {produk.shop?.name || 'Official Store'}
+                                        </p>
+                                    </div>
 
                                     <Link
                                         to={`/produk/${produk.id}`}
-                                        className="font-display mt-1.5 line-clamp-2 min-h-[2.6em] text-[15px] leading-snug text-[#16191C] transition-colors group-hover:text-[#1E4034] sm:text-base"
+                                        className="line-clamp-2 min-h-[48px] text-base font-extrabold leading-6 tracking-tight text-slate-900 transition-colors hover:text-indigo-600"
                                     >
                                         {produk.name}
                                     </Link>
 
-                                    <div className="mt-3 flex flex-wrap items-baseline gap-x-2">
-                                        <span className="font-display text-lg text-[#16191C] sm:text-xl">
-                                            Rp{Number(produk.final_price ?? produk.price).toLocaleString('id-ID')}
-                                        </span>
-                                        {Number(produk.discount_percent) > 0 && (
-                                            <span className="text-xs text-[#16191C]/40 line-through">
-                                                Rp{Number(produk.price).toLocaleString('id-ID')}
-                                            </span>
-                                        )}
+                                    <div className="mt-5">
+                                        <p className="mb-1 text-[10px] font-bold uppercase tracking-[0.15em] text-slate-400">
+                                            Harga terbaik
+                                        </p>
+                                        <p className="text-2xl font-black tracking-[-0.04em] text-slate-950">
+                                            {Number(produk.discount_percent) > 0 && <div className="text-xs font-bold text-slate-400 line-through">Rp{Number(produk.price).toLocaleString('id-ID')}</div>}<div>Rp{Number(produk.final_price ?? produk.price).toLocaleString('id-ID')}</div>
+                                        </p>
                                     </div>
 
-                                    <div className="mt-4 flex gap-2 pt-1">
+                                    <div className="mt-auto flex gap-2 pt-5">
                                         <button
                                             onClick={() => handleBuyNow(produk.id)}
-                                            className="flex-1 bg-[#16191C] py-3.5 text-xs font-semibold text-[#F5F2EA] transition-colors hover:bg-[#1E4034] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1E4034] focus-visible:ring-offset-2"
+                                            className="flex-1 rounded-2xl bg-slate-950 py-3.5 text-xs font-extrabold text-white shadow-lg shadow-slate-900/10 transition-all hover:-translate-y-0.5 hover:bg-indigo-600 hover:shadow-indigo-500/20 active:translate-y-0"
                                         >
                                             Beli sekarang
                                         </button>
@@ -383,9 +396,9 @@ export default function Catalog() {
                                             onClick={() => handleAddToCart(produk.id)}
                                             title="Tambah ke Keranjang"
                                             aria-label={`Tambah ${produk.name} ke keranjang`}
-                                            className="grid h-11 w-11 shrink-0 place-items-center border border-[#16191C]/15 text-[#16191C] transition-colors hover:border-[#16191C] hover:bg-[#16191C] hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1E4034] focus-visible:ring-offset-2"
+                                            className="grid h-[46px] w-[46px] shrink-0 place-items-center rounded-2xl border border-slate-200 bg-slate-50 text-slate-700 transition-all hover:border-slate-900 hover:bg-slate-950 hover:text-white active:scale-95"
                                         >
-                                            <svg viewBox="0 0 24 24" className="h-[16px] w-[16px] fill-none stroke-current stroke-2">
+                                            <svg viewBox="0 0 24 24" className="h-[18px] w-[18px] fill-none stroke-current stroke-2">
                                                 <path d="M3 4h2l2.2 10.2a2 2 0 0 0 2 1.6h7.9a2 2 0 0 0 1.9-1.4L21 7H6" />
                                                 <circle cx="10" cy="20" r="1" />
                                                 <circle cx="18" cy="20" r="1" />
@@ -400,40 +413,28 @@ export default function Catalog() {
             </main>
 
             {/* FOOTER */}
-            <footer className="border-t border-[#E3DFD3]">
-                <div className="mx-auto flex max-w-7xl flex-col items-center gap-2 px-4 py-10 text-center sm:flex-row sm:justify-between sm:px-6 sm:text-left lg:px-8">
-                    <p className="font-display text-sm italic text-[#16191C]/60">
-                        Shop better. Live better.
+            <footer className="border-t border-slate-200/70 bg-white/70">
+                <div className="mx-auto flex max-w-7xl flex-col gap-2 px-4 py-8 text-center sm:flex-row sm:items-center sm:justify-between sm:px-6 sm:text-left lg:px-8">
+                    <p className="text-xs font-bold text-slate-400">
+                        © {new Date().getFullYear()} Algshop. All rights reserved.
                     </p>
-                    <p className="text-xs font-medium text-[#16191C]/40">
-                        © {new Date().getFullYear()} Algshop. Seluruh hak cipta dilindungi.
+                    <p className="text-[10px] font-bold uppercase tracking-[0.15em] text-slate-300">
+                        Shop better. Live better.
                     </p>
                 </div>
             </footer>
 
             {/* TOAST */}
             {toast && (
-                <div className="fixed bottom-5 left-1/2 z-[100] w-[calc(100%-32px)] max-w-sm -translate-x-1/2 sm:left-auto sm:right-6 sm:w-auto sm:translate-x-0">
-                    <div
-                        className={`algshop-toast flex items-center gap-3 border px-4 py-3.5 shadow-lg ${
-                            toast.type === 'error'
-                                ? 'border-[#A23E2E]/40 bg-[#16191C] text-[#F3D9D2]'
-                                : 'border-[#1E4034]/40 bg-[#16191C] text-[#D9EAE2]'
-                        }`}
-                    >
-                        <span className="grid h-6 w-6 shrink-0 place-items-center rounded-full border border-current/40">
-                            {toast.type === 'error' ? (
-                                <svg viewBox="0 0 24 24" className="h-3.5 w-3.5 fill-none stroke-current stroke-2">
-                                    <path d="M12 8v5M12 16h.01" />
-                                    <circle cx="12" cy="12" r="9" />
-                                </svg>
-                            ) : (
-                                <svg viewBox="0 0 24 24" className="h-3.5 w-3.5 fill-none stroke-current stroke-2">
-                                    <path d="M5 13l4 4L19 7" />
-                                </svg>
-                            )}
-                        </span>
-                        <p className="text-sm font-medium">{toast.message}</p>
+                <div className="fixed bottom-5 left-1/2 z-[100] w-[calc(100%-32px)] max-w-md -translate-x-1/2 sm:left-auto sm:right-5 sm:w-auto sm:translate-x-0">
+                    <div className={`flex items-center gap-3 rounded-2xl border px-4 py-3.5 shadow-2xl backdrop-blur-xl ${toast.type === 'error'
+                        ? 'border-red-200 bg-red-50/95 text-red-700'
+                        : 'border-emerald-200 bg-emerald-50/95 text-emerald-700'
+                        }`}>
+                        <div className="grid h-8 w-8 shrink-0 place-items-center rounded-xl bg-white/80 text-sm">
+                            {toast.type === 'error' ? '!' : '✓'}
+                        </div>
+                        <p className="text-xs font-bold">{toast.message}</p>
                     </div>
                 </div>
             )}
