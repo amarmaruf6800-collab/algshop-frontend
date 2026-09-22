@@ -336,7 +336,7 @@ export default function Catalog() {
                                     )}
 
                                     <span className="absolute right-4 top-4 grid h-8 w-8 place-items-center rounded-full bg-white/90 text-slate-700 opacity-0 shadow-lg backdrop-blur-sm transition-all duration-300 group-hover:opacity-100">
-                                        <ArrowUpRight size={16} /> {/* Anda bisa import icon arrow dari lucide-react jika ada, atau gunakan SVG */}
+                                       
                                         <svg viewBox="0 0 24 24" className="h-4 w-4 fill-none stroke-current stroke-2"><path d="M7 17L17 7M17 7H7M17 7V17"/></svg>
                                     </span>
                                 </Link>
